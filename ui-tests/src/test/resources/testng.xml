@@ -1,5 +1,9 @@
 <suite name="Sorting Suite" parallel="tests" thread-count="5">
 
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+
     <test name="Bubble">
         <parameter name="algo" value="1"/>
         <classes>
@@ -34,5 +38,7 @@
             <class name="tests.AlgoParallelTest"/>
         </classes>
     </test>
+
+    
 
 </suite>
