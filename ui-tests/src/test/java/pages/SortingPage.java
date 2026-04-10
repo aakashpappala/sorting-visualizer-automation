@@ -4,6 +4,9 @@ import core.WaitUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class SortingPage {
 
     WebDriver driver;
@@ -45,13 +48,7 @@ public class SortingPage {
     }
 
     public void clickSort() {
-
         WebElement sortBtn = waitUtils.waitForElementClickable(sort);
-
-        waitUtils.waitUntil(d ->
-                !sortBtn.getAttribute("class").contains("disabled")
-        );
-
         sortBtn.click();
     }
 
@@ -63,19 +60,26 @@ public class SortingPage {
         return driver.findElements(sortedBars).size();
     }
 
-    // 🔥 FINAL ULTRA STABLE WAIT
+    // 🔥 STREAM BASED VALUES FETCH
+    public List<Integer> getValues() {
+        return driver.findElements(bars)
+                .stream()
+                .map(e -> Integer.parseInt(e.getAttribute("value")))
+                .collect(Collectors.toList());
+    }
+
+    // 🔥 WAIT FOR SORT COMPLETE
     public void waitForSortingComplete() {
 
         long start = System.currentTimeMillis();
 
         while (true) {
 
-            WebElement sortBtn = driver.findElement(By.cssSelector(".start"));
+            int total = driver.findElements(bars).size();
+            int done = driver.findElements(sortedBars).size();
 
-            boolean enabled = !sortBtn.getAttribute("class").contains("disabled");
-
-            if (enabled) {
-                return; // sorting completed
+            if (total > 0 && total == done) {
+                return;
             }
 
             if (System.currentTimeMillis() - start > 120000) {
@@ -83,8 +87,14 @@ public class SortingPage {
             }
 
             try {
-                Thread.sleep(500);
-            } catch (Exception e) {}
+                Thread.sleep(300);
+            } catch (Exception ignored) {}
         }
+    }
+
+    public boolean isSortedCompletely() {
+        int total = driver.findElements(bars).size();
+        int done = driver.findElements(sortedBars).size();
+        return total > 0 && total == done;
     }
 }

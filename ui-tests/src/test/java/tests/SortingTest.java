@@ -6,6 +6,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.SortingPage;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class SortingTest extends BaseTest {
 
     @DataProvider(name = "sortingData")
@@ -43,16 +47,26 @@ public class SortingTest extends BaseTest {
 
         page.clickGenerate();
 
-        int before = page.getBarsCount();
+        // 🔥 BEFORE VALUES
+        List<Integer> beforeValues = page.getValues();
 
         page.clickSort();
 
         page.waitForSortingComplete();
 
-        int after = page.getSortedBarsCount();
+        // 🔥 AFTER VALUES
+        List<Integer> afterValues = page.getValues();
 
-        Assert.assertEquals(after, before);
+        // 🔥 EXPECTED (Collections sort)
+        List<Integer> expected = new ArrayList<>(beforeValues);
+        Collections.sort(expected);
 
-        System.out.println("PASS → Algo:" + algo + " Size:" + size + " Speed:" + speed);
+        // 🔥 FINAL ASSERTION
+        Assert.assertEquals(afterValues, expected,
+                "❌ Sorting failed for Algo:" + algo);
+
+        System.out.println("✅ PASS → Algo:" + algo +
+                " Size:" + size +
+                " Speed:" + speed);
     }
 }

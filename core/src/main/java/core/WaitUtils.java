@@ -4,15 +4,17 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.function.Function;
 
 public class WaitUtils {
 
-    private WebDriver driver;
-    private WebDriverWait wait;
+    WebDriver driver;
+    WebDriverWait wait;
 
     public WaitUtils(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
     public WebElement waitForElementVisible(By locator) {
@@ -24,10 +26,10 @@ public class WaitUtils {
     }
 
     public void waitForElementsMoreThanZero(By locator) {
-        wait.until(d -> d.findElements(locator).size() > 0);
+        wait.until(driver -> driver.findElements(locator).size() > 0);
     }
 
-    public void waitUntil(java.util.function.Function<WebDriver, Boolean> condition) {
+    public void waitUntil(Function<WebDriver, Boolean> condition) {
         wait.until(condition);
     }
 }

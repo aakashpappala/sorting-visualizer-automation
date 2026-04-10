@@ -1,6 +1,4 @@
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-
-<suite name="AlgoParallelSuite" parallel="tests" thread-count="5">
+<suite name="Sorting Suite" parallel="tests" thread-count="5">
 
     <test name="Bubble">
         <parameter name="algo" value="1"/>

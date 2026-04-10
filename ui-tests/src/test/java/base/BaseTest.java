@@ -2,23 +2,33 @@ package base;
 
 import core.DriverFactory;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.*;
 
 public class BaseTest {
 
     @BeforeMethod
     public void setup() {
-        DriverFactory.initDriver();
-        getDriver().get("file:///C:/Users/DELL/sorting-visualizer/index.html");
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-notifications");
+        options.addArguments("--disable-extensions");
+
+        WebDriver driver = new ChromeDriver(options);
+
+        DriverFactory.setDriver(driver);
+
+        driver.manage().window().maximize();
+        driver.get("///C:/Users/DELL/sorting-visualizer/index.html"); // change if needed
     }
 
-    @AfterMethod(alwaysRun = true)
+    @AfterMethod
     public void tearDown() {
         DriverFactory.quitDriver();
     }
 
-    protected WebDriver getDriver() {
+    public WebDriver getDriver() {
         return DriverFactory.getDriver();
     }
 }

@@ -1,27 +1,26 @@
 package listeners;
 
-import core.DriverFactory;
-import core.ScreenshotUtils;
-import io.qameta.allure.Allure;
-import org.openqa.selenium.*;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-
-import java.io.ByteArrayInputStream;
+import com.aventstack.extentreports.*;
+import org.testng.*;
 
 public class TestListener implements ITestListener {
 
-    @Override
+    ExtentReports extent = ExtentManager.getInstance();
+    ThreadLocal<ExtentTest> test = new ThreadLocal<>();
+
+    public void onTestStart(ITestResult result) {
+        test.set(extent.createTest(result.getName()));
+    }
+
+    public void onTestSuccess(ITestResult result) {
+        test.get().pass("✅ Test Passed");
+    }
+
     public void onTestFailure(ITestResult result) {
+        test.get().fail(result.getThrowable());
+    }
 
-        WebDriver driver = DriverFactory.getDriver();
-        String testName = result.getName();
-
-        // Save file
-        ScreenshotUtils.captureScreenshot(driver, testName);
-
-        // Attach to Allure
-        byte[] bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-        Allure.addAttachment(testName, new ByteArrayInputStream(bytes));
+    public void onFinish(ITestContext context) {
+        extent.flush();
     }
 }

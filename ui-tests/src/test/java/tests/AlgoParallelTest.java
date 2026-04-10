@@ -4,6 +4,10 @@ import base.BaseTest;
 import org.testng.annotations.*;
 import pages.SortingPage;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Listeners(listeners.TestListener.class)
 public class AlgoParallelTest extends BaseTest {
 
@@ -27,19 +31,18 @@ public class AlgoParallelTest extends BaseTest {
 
                 page.clickGenerate();
 
-                sleep(500);
-
-                int before = page.getBarsCount();
+                List<Integer> before = page.getValues();
 
                 page.clickSort();
 
-                sleep(1000);
-
                 page.waitForSortingComplete();
 
-                int after = page.getSortedBarsCount();
+                List<Integer> after = page.getValues();
 
-                if (before != after) {
+                List<Integer> expected = new ArrayList<>(before);
+                Collections.sort(expected);
+
+                if (!after.equals(expected)) {
                     throw new RuntimeException("❌ FAIL Algo:" + algo);
                 }
 
@@ -48,9 +51,5 @@ public class AlgoParallelTest extends BaseTest {
                         " Speed:" + speed);
             }
         }
-    }
-
-    private void sleep(int ms) {
-        try { Thread.sleep(ms); } catch (Exception e) {}
     }
 }
