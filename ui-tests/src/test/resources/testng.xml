@@ -1,0 +1,40 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="AlgoParallelSuite" parallel="tests" thread-count="5">
+
+    <test name="Bubble">
+        <parameter name="algo" value="1"/>
+        <classes>
+            <class name="tests.AlgoParallelTest"/>
+        </classes>
+    </test>
+
+    <test name="Selection">
+        <parameter name="algo" value="2"/>
+        <classes>
+            <class name="tests.AlgoParallelTest"/>
+        </classes>
+    </test>
+
+    <test name="Insertion">
+        <parameter name="algo" value="3"/>
+        <classes>
+            <class name="tests.AlgoParallelTest"/>
+        </classes>
+    </test>
+
+    <test name="Merge">
+        <parameter name="algo" value="4"/>
+        <classes>
+            <class name="tests.AlgoParallelTest"/>
+        </classes>
+    </test>
+
+    <test name="Quick">
+        <parameter name="algo" value="5"/>
+        <classes>
+            <class name="tests.AlgoParallelTest"/>
+        </classes>
+    </test>
+
+</suite>
