@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -20,12 +19,11 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- 🔥 central versions -->
-        <selenium.version>4.18.1</selenium.version>
-        <testng.version>7.9.0</testng.version>
-        <wdm.version>5.7.0</wdm.version>
+        <!-- 🔥 UPDATED VERSIONS -->
+        <selenium.version>4.21.0</selenium.version>
+        <testng.version>7.10.2</testng.version>
+        <wdm.version>5.9.2</wdm.version>
     </properties>
 
 </project>

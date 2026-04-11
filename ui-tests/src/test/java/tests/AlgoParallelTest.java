@@ -8,11 +8,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// 🔥 ALLURE IMPORTS
+import io.qameta.allure.*;
+
 @Listeners(listeners.TestListener.class)
 public class AlgoParallelTest extends BaseTest {
 
     @Test(retryAnalyzer = utils.RetryAnalyzer.class)
     @Parameters("algo")
+    @Description("Run sorting algorithm test")
+    @Severity(SeverityLevel.CRITICAL)
     public void runAlgo(String algo) {
 
         SortingPage page = new SortingPage(getDriver());
@@ -22,6 +27,11 @@ public class AlgoParallelTest extends BaseTest {
 
         for (String size : sizes) {
             for (String speed : speeds) {
+
+                // 🔥 ALLURE STEP
+                Allure.step("Running Algo: " + algo +
+                        " Size: " + size +
+                        " Speed: " + speed);
 
                 page.waitForPageToLoad();
 

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -12,30 +11,29 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-
     <artifactId>ui-tests</artifactId>
 
     <dependencies>
 
-        <!-- core module -->
+        <!-- core -->
         <dependency>
             <groupId>com.aakash</groupId>
             <artifactId>core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- Selenium -->
+        <!-- 🔥 Selenium (FIXED) -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
+            <version>4.21.0</version>
         </dependency>
 
-        <!-- TestNG -->
+        <!-- 🔥 TestNG (FIXED) -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
+            <version>7.10.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -46,6 +44,7 @@
             <version>2.24.0</version>
         </dependency>
 
+        <!-- Extent -->
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
@@ -54,11 +53,10 @@
 
     </dependencies>
 
-    <!-- 🔥 SINGLE BUILD BLOCK -->
     <build>
         <plugins>
 
-            <!-- 🔥 TestNG Runner (ONLY ONE) -->
+            <!-- 🔥 SUREFIRE -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -68,10 +66,17 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+
+                    <!-- 🔥 ALLURE OUTPUT FIX -->
+                    <systemPropertyVariables>
+                        <allure.results.directory>
+                            ${project.build.directory}/allure-results
+                        </allure.results.directory>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
-            <!-- Allure Plugin -->
+            <!-- Allure plugin -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
