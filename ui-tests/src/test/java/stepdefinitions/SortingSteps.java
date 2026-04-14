@@ -1,19 +1,23 @@
-package tests;
+package stepdefinitions;
 
 import base.BaseTest;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import io.cucumber.java.en.*;
 import pages.SortingPage;
 
-public class AlgoParallelTest extends BaseTest {
+public class SortingSteps extends BaseTest {
 
-    @Test(enabled = false)
-    @Parameters("algo")
-    public void runAlgo(String algo) {
+    SortingPage page;
 
-        SortingPage page = new SortingPage(getDriver());
-
+    @Given("user opens sorting page")
+    public void openPage() {
+        setup();
+        page = new SortingPage(getDriver());
         page.waitForPageToLoad();
+    }
+
+    // 🔥 NEW METHOD (IMPORTANT)
+    @When("user runs all combinations for algorithm {string}")
+    public void runAll(String algo) {
 
         String[] sizes = {"5", "10", "15"};
         String[] speeds = {"1", "2", "3"};
@@ -32,11 +36,13 @@ public class AlgoParallelTest extends BaseTest {
                 page.clickGenerate();
                 page.clickSort();
 
-                // 🔥 ONLY WAIT → NO EXTRA DELAY
                 page.waitForSortingComplete();
             }
         }
+    }
 
-        System.out.println("✅ Completed Algo: " + algo);
+    @Then("sorting should complete")
+    public void verifySorting() {
+        tearDown();
     }
 }

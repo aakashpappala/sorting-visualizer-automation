@@ -1,44 +1,44 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
 <suite name="Sorting Suite" parallel="tests" thread-count="5">
 
     <listeners>
-        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+        <listener class-name="listeners.TestListener"/>
     </listeners>
 
-    <test name="Bubble">
+    <test name="Algo-1">
         <parameter name="algo" value="1"/>
         <classes>
             <class name="tests.AlgoParallelTest"/>
         </classes>
     </test>
 
-    <test name="Selection">
+    <test name="Algo-2">
         <parameter name="algo" value="2"/>
         <classes>
             <class name="tests.AlgoParallelTest"/>
         </classes>
     </test>
 
-    <test name="Insertion">
+    <test name="Algo-3">
         <parameter name="algo" value="3"/>
         <classes>
             <class name="tests.AlgoParallelTest"/>
         </classes>
     </test>
 
-    <test name="Merge">
+    <test name="Algo-4">
         <parameter name="algo" value="4"/>
         <classes>
             <class name="tests.AlgoParallelTest"/>
         </classes>
     </test>
 
-    <test name="Quick">
+    <test name="Algo-5">
         <parameter name="algo" value="5"/>
         <classes>
             <class name="tests.AlgoParallelTest"/>
         </classes>
     </test>
-
-    
 
 </suite>

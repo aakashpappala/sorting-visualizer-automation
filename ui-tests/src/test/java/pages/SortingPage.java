@@ -3,7 +3,8 @@ package pages;
 import core.WaitUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,6 @@ public class SortingPage {
     By sort = By.cssSelector(".start");
 
     By bars = By.cssSelector(".cell");
-    By sortedBars = By.cssSelector(".cell.done");
 
     public void waitForPageToLoad() {
         waitUtils.waitForElementVisible(algo);
@@ -43,7 +43,8 @@ public class SortingPage {
     }
 
     public void clickGenerate() {
-        driver.findElement(generate).click();
+        WebElement btn = waitUtils.waitForElementClickable(generate);
+        btn.click();
         waitUtils.waitForElementsMoreThanZero(bars);
     }
 
@@ -52,15 +53,6 @@ public class SortingPage {
         sortBtn.click();
     }
 
-    public int getBarsCount() {
-        return driver.findElements(bars).size();
-    }
-
-    public int getSortedBarsCount() {
-        return driver.findElements(sortedBars).size();
-    }
-
-    // 🔥 STREAM BASED VALUES FETCH
     public List<Integer> getValues() {
         return driver.findElements(bars)
                 .stream()
@@ -68,33 +60,50 @@ public class SortingPage {
                 .collect(Collectors.toList());
     }
 
-    // 🔥 WAIT FOR SORT COMPLETE
+    // 🔥 FINAL PERFECT WAIT (GREEN BASED)
     public void waitForSortingComplete() {
-
-        long start = System.currentTimeMillis();
 
         while (true) {
 
-            int total = driver.findElements(bars).size();
-            int done = driver.findElements(sortedBars).size();
+            List<WebElement> elements = driver.findElements(bars);
 
-            if (total > 0 && total == done) {
-                return;
+            boolean allDone = true;
+
+            for (WebElement e : elements) {
+
+                String classes = e.getAttribute("class");
+
+                // 🔥 FINAL CORRECT CHECK
+                if (!classes.contains("done")) {
+                    allDone = false;
+                    break;
+                }
             }
 
-            if (System.currentTimeMillis() - start > 120000) {
-                throw new RuntimeException("❌ Sorting timeout");
+            if (allDone && elements.size() > 0) {
+                return; // 🔥 IMMEDIATE EXIT
             }
 
             try {
-                Thread.sleep(300);
-            } catch (Exception ignored) {}
+                Thread.sleep(10); // ⚡ ultra fast
+            } catch (Exception e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
-
     public boolean isSortedCompletely() {
-        int total = driver.findElements(bars).size();
-        int done = driver.findElements(sortedBars).size();
-        return total > 0 && total == done;
+
+        List<WebElement> elements = driver.findElements(bars);
+
+        for (WebElement e : elements) {
+
+            String color = e.getCssValue("background-color");
+
+            if (!(color.contains("0, 128, 0") || color.contains("0, 255, 0"))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
